@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Nasapod
+        </title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <script src="js/script.js" charset="utf-8"></script>
+
+        <!--Include the css specifications -->
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        
+      </head>
+    <body>
+    
+    <img id="apod_img_id" class="bckImg" src="images/source.gif">
+
+    
+
+    <div class="outer-container">
+      <div class="innerGridContainer">
+        <div class="contentGridContainer">
+            <div class="headerGridContainer">
+              <div class="item1header">
+                <div class="nasapod">Nasa-Picture of the Day</div></br>
+                <div id= "apod_title" class="pictitle">An error occured</div>
+              </div>
+              <div class="item2header">
+                <input type="button" onclick="return change(this);" value="+" class="btn" data-toggle="collapse" data-target="#demo" style="font-size: 2vw; font-weight: bold; align-content: space-around; outline: none; box-shadow: none; color: white; justify-self: center; align-self: center ">  
+                </input>
+              </div>
+              </div>
+              <div id="demo" class="collapse">
+                <div class="explanationContainer">
+                  <div id="apod_explaination" class="explanation">Trouble shooting:<br />Check your Wifi-Connection<br />For further assistance please contact your DES-Support</div>
+                  <br>
+                  <div id="copyright" class="credit"></div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <script id="jsbin-javascript">
+        /*Link to the NASA-API with api-key
+        to get a api-key just simply go to https://api.nasa.gov/#apply-for-an-api-key and register
+        it is for free, but if you have to many requests, it will show an error*/
+        var url = "https://api.nasa.gov/planetary/apod?api_key=NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo";
+        
+        $.ajax({
+          url: url,
+          success: function(result){
+          if("copyright" in result) {
+            $("#copyright").text("Image Credits: " + result.copyright);
+          }
+          else {
+            $("#copyright").text("Image Credits: " + "Public Domain");
+          }
+          if(result.media_type == "video") {
+            $("#apod_img_id").css("display", "none"); 
+            $("#apod_vid_id").attr("src", result.url);
+          }
+          else {
+            $("#apod_vid_id").css("display", "none"); 
+            $("#apod_img_id").attr("src", result.url);
+          }
+          $("#reqObject").text(url);
+          $("#returnObject").text(JSON.stringify(result, null, 4));  
+          $("#apod_explaination").text(result.explanation);
+          $("#apod_title").text(result.title);
+        }
+        });                
+    </script>
+
+    </body>
+</html>
